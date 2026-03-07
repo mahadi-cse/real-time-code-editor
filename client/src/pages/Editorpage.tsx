@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import logo from '../assets/logo/code_realtime.png'
 import { Clients } from '../components/Clients'
 import { Editor } from '../components/Editor'
 
 export const Editorpage = () => {
-  const [clients, setClients] = useState([
+  const [clients] = useState([
     {
       socketid: '1234',
       userName: 'John Doe',
