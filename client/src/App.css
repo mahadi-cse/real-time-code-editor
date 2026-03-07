@@ -92,6 +92,7 @@ footer a:hover {
 .mainWrap {
     display: grid;
     grid-template-columns: 230px 1fr;
+    height: 100vh;
 }
 
 .aside {
@@ -107,19 +108,18 @@ footer a:hover {
 
 .clientsList {
     display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .client {
     display: flex;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
     font-weight: bold;
 }
 .userName {
-    margin-top: 10px;
+    margin-left: 10px;
 }
 
 .logo {
