@@ -13,7 +13,7 @@ export const Editor = () => {
     if (!editorRef.current) return;
 
     const startState = EditorState.create({
-      doc: " //Collaborate with your teams;",
+      doc: "//Collaborate with your teams; This deploye happend with github action CI/CD pipeline & Vercel \nconsole.log('Hello, World!');",
       extensions: [basicSetup, javascript(), oneDark]
     });
 
@@ -28,7 +28,7 @@ export const Editor = () => {
   return (
     <div
       ref={editorRef}
-      style={{ border: "1px solid #000000", height: "100vh" }}
+      style={{ border: "1px solid #282C34", height: "100vh" }}
     />
   );
 };
