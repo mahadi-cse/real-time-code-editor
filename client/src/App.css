@@ -33,11 +33,6 @@ footer a {
     margin-top: 0;
 }
 
-.homePageLogo {
-    height: 80px;
-    margin-bottom: 30px;
-}
-
 .inputBox {
     padding: 10px;
     border-radius: 5px;
@@ -76,14 +71,14 @@ footer a {
     margin-top: 20px;
 }
 
-.createNewBtn {
+.createInfo a {
     color: #4aed88;
     text-decoration: none;
     border-bottom: 1px solid #4aed88;
     transition: all 0.3s ease-in-out;
 }
 
-.createNewBtn:hover,
+.createInfo a:hover,
 footer a:hover {
     color: #368654;
     border-color: #368654;
@@ -102,6 +97,7 @@ footer a:hover {
     display: flex;
     flex-direction: column;
 }
+
 .asideInner {
     flex: 1;
 }
@@ -118,6 +114,7 @@ footer a:hover {
     flex-direction: row;
     font-weight: bold;
 }
+
 .userName {
     margin-left: 10px;
 }
@@ -127,17 +124,11 @@ footer a:hover {
     padding-bottom: 10px;
 }
 
-.logoImage {
-    height: 60px;
+.editor-wrap {
+    background: #282C34;
 }
 
 .leaveBtn {
     width: 100%;
     margin-top: 20px;
-}
-.CodeMirror {
-    min-height: calc(100vh - 20px);
-    font-size: 20px;
-    line-height: 1.6;
-    padding-top: 20px;
 }

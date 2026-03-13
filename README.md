@@ -1,137 +1,182 @@
 # Real-Time Code Editor
 
-A collaborative code editor project currently focused on the **frontend application**.
+A fully functional collaborative code editor where multiple users can edit code simultaneously in shared rooms with **instant synchronization** powered by WebSockets.
 
-> ⚠️ **Backend status:** The backend/realtime server is not available in this repository right now. This README documents the current frontend implementation and how to run it.
+> ✅ **Status:** Full-stack implementation complete with real-time Socket.IO communication between client and server.
 
 ## Project Status
 
-- ✅ Frontend app is implemented with React + TypeScript + Vite
-- ✅ Home flow for creating/joining a room is available
-- ✅ Editor page layout and connected-clients UI are available
-- ⏳ Realtime collaboration/socket integration is not yet connected in this repo
+- ✅ Backend server with Node.js + Express + Socket.IO is fully implemented
+- ✅ Frontend app with React + TypeScript + Vite is functional
+- ✅ Real-time code synchronization with WebSocket integration
+- ✅ Room management (create, join, disconnect)
+- ✅ Connected users presence and avatars
+- ✅ Live code editor with CodeMirror integration
 
 ## Repository Structure
 
 ```text
 real-time-code-editor/
-└── frontend/
-    ├── src/
-    │   ├── components/
-    │   │   └── Clients.tsx
-    │   ├── pages/
-    │   │   ├── Home.tsx
-    │   │   └── Editorpage.tsx
-    │   ├── App.tsx
-    │   ├── App.css
-    │   └── main.tsx
+├── client/                          # React frontend application
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Clients.tsx         # Connected users display
+│   │   │   └── Editor.tsx          # CodeMirror editor with realtime sync
+│   │   ├── pages/
+│   │   │   ├── Home.tsx            # Room creation/joining
+│   │   │   └── Editorpage.tsx      # Main editor page with socket connection
+│   │   ├── App.tsx                 # Router setup
+│   │   ├── App.css
+│   │   └── main.tsx
+│   ├── package.json
+│   ├── vite.config.ts
+│   └── tsconfig.json
+│
+└── server/                          # Node.js backend server
+    ├── server.ts                    # Socket.IO server with room/code management
     ├── package.json
-    └── vite.config.ts
+    └── tsconfig.json
 ```
 
-## Frontend Features (Current)
+## Features
 
-### 1) Home Page (`/`)
+### Backend (Node.js + Socket.IO)
 
-- Enter **Room ID** and **Username**
-- Create a new room ID using UUID
-- Join room action routes to `/editor/:id`
-- Toast notifications for success/error states
+- **Room Management:** Users can join unique rooms identified by UUID
+- **Code Persistence:** Current code state is maintained per room and sent to new joiners
+- **Real-time Broadcasting:** Code changes instantly broadcast to all users in a room
+- **User Presence:** Track connected users and their socket/username information
+- **Auto-cleanup:** Empty rooms and associated code are automatically cleaned up
+- **CORS Enabled:** Accepts connections from any frontend origin
 
-### 2) Editor Page (`/editor/:id`)
+### Frontend (React + TypeScript)
 
-- Sidebar layout for connected participants
-- Client avatar + username display component
-- Placeholder editor area ready for realtime editor integration
+#### 1) Home Page (`/`)
+
+- Create new room with auto-generated UUID
+- Join existing room with custom username
+- Session persistence (room ID and username stored in sessionStorage)
+- Real-time toast notifications for user feedback
+
+#### 2) Editor Page (`/editor/:id`)
+
+- **Live Code Editor:** CodeMirror-based editor with JavaScript syntax highlighting
+- **Real-time Sync:** Code changes instantly appear to all connected users
+- **Connected Users Panel:** Avatar + username display for all participants
+- **Room Sharing:** Copy room ID button for easy collaboration invites
+- **Dark Theme:** Comfortable One Dark theme for extended coding sessions
+- **Auto-recovery:** New users receive current code state on join
 
 ## Tech Stack
 
+### Frontend
 - **Framework:** React 19
 - **Language:** TypeScript
 - **Build Tool:** Vite 7
 - **Routing:** React Router DOM
+- **Code Editor:** CodeMirror 6 with JavaScript support
 - **Notifications:** react-hot-toast
 - **Avatar UI:** react-avatar
 - **Utilities:** uuid
 - **Linting:** ESLint + typescript-eslint
+- **Styling:** CSS
 
-## Getting Started (Frontend)
+### Backend
+- **Runtime:** Node.js (TypeScript)
+- **Framework:** Express.js
+- **Real-time:** Socket.IO
+- **Port:** 5000 (default)
+
+## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+ (recommended latest LTS)
 - npm (comes with Node)
 
-### Installation
+### Installation & Setup
+
+#### 1. Setup Backend Server
 
 ```bash
-cd frontend
+cd server
 npm install
 ```
 
-### Run Development Server
+#### 2. Setup Frontend Client
 
 ```bash
+cd client
+npm install
+```
+
+### Run Both in Development
+
+**Terminal 1 - Start Backend Server:**
+```bash
+cd server
+npm start
+# Server runs on http://localhost:5000
+```
+
+**Terminal 2 - Start Frontend Dev Server:**
+```bash
+cd client
 npm run dev
+# Vite dev server runs on http://localhost:5173
 ```
 
-Then open the local Vite URL shown in terminal (usually `http://localhost:5173`).
+Then open `http://localhost:5173` in your browser.
 
-### Build for Production
+### Frontend Scripts
 
-```bash
-npm run build
-```
-
-### Preview Production Build
-
-```bash
-npm run preview
-```
-
-### Lint
-
-```bash
-npm run lint
-```
-
-## Available Scripts
-
-Inside `frontend/package.json`:
+Inside `client/package.json`:
 
 - `npm run dev` — start Vite dev server
 - `npm run build` — TypeScript build + Vite production build
 - `npm run preview` — preview production build locally
 - `npm run lint` — run ESLint checks
 
-## Routing Overview
+### Backend Scripts
 
-- `/` → `Home`
-- `/editor/:id` → `Editorpage`
+Inside `server/package.json`:
 
-## Current Limitations
+- `npm start` — run server with ts-node
 
-Because backend services are currently unavailable in this repository:
+## How Real-Time Sync Works
 
-- No live socket connection
-- No shared code synchronization across users
-- No persisted room/session management
+1. **User types** → CodeMirror editor detects change
+2. **Change emitted** → Socket.IO sends `code-change` event to server
+3. **Server updates** → Saves latest code and broadcasts via `socket.to(roomId)`
+4. **Others receive** → `code-update` listener updates their editor
+5. **No echo** → Flag prevents re-broadcasting to sender
 
-## Next Backend Integration Checklist
+## Environment Variables
 
-When backend is added, wire the frontend with:
+### Frontend (`client/`)
+- `VITE_SOCKET_URL` — Backend server URL (defaults to `http://localhost:5000`)
 
-- Socket connection lifecycle (`connect`, `disconnect`, reconnect handling)
-- Room join/leave events
-- Realtime code change broadcasting
-- Connected users sync and presence updates
-- Error handling and reconnect UX
+### Backend (`server/`)
+- `PORT` — Server listening port (defaults to `5000`)
 
-## Notes
+## Deployment
 
-- The existing `frontend/README.md` is the default Vite template and can be replaced later.
-- This root `README.md` is intended for GitHub repository landing page visibility.
+### Frontend
+```bash
+cd client
+npm run build
+# Output: dist/ folder ready for hosting (Vercel, Netlify, etc.)
+```
 
----
+### Backend
+Deploy `server/` to a Node.js hosting platform (Heroku, Railway, AWS, etc.) and set:
+- `PORT` environment variable
+- Update `VITE_SOCKET_URL` in frontend to point to deployed backend
 
-If you want, I can also replace `frontend/README.md` with a shorter frontend-specific developer README to keep both docs consistent.
+## Testing the App
+
+1. Open two browser tabs or windows to `http://localhost:5173`
+2. Create a new room on tab 1
+3. Copy the room ID and paste into tab 2
+4. Type in the editor on either tab — changes appear instantly on the other
+5. Connected users list updates in real-time
