@@ -4,10 +4,9 @@
   "description": "This is a simple real time code collaborator for code share edit & run anywhere",
   "main": "server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node server.ts",
-    "server:dev": "nodemon --watch server.ts --exec ts-node server.ts",
-    "server:prod": "ts-node server.ts"
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon --watch server.ts --exec ts-node server.ts"
   },
   "repository": {
     "type": "git",
