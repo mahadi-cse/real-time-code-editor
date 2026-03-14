@@ -18,7 +18,7 @@ const getRoomUsers = (users: Map<string, string>): RoomUser[] =>
   Array.from(users.entries()).map(([socketId, userName]) => ({ socketId, userName }));
 
 io.on('connection', (socket) => {
-  console.log(`User connected: ${socket.id}`);
+  console.log(`User connected through CI/CD: ${socket.id}`);
 
   socket.on('join-room', ({ roomId, userName }: { roomId: string; userName?: string }) => {
     if (!roomId) return;
